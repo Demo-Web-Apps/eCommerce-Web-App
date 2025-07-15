@@ -22,6 +22,8 @@ hub create "$ORG_NAME/$PROJECT_NAME"
 # Set the main branch name explicitly (if needed)
 git branch -M main
 
+git config http.postBuffer 524288000
+
 # Push to GitHub
 git push -u origin main
 
