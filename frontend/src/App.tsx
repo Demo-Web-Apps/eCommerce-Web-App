@@ -1,4 +1,4 @@
-import { Routes, Route, Link, useNavigate, Navigate, useParams } from 'react-router-dom'
+import { Routes, Route, Link, useNavigate, useParams } from 'react-router-dom'
 import { useState, useRef, useEffect } from 'react'
 import ProductList from './ProductList'
 import type { Product } from './products'
@@ -258,9 +258,8 @@ function Cart({ cart, onRemoveFromCart }: { cart: Product[]; onRemoveFromCart: (
   )
 }
 
-function Checkout({ cart, onOrderPlaced, setOrders, orders, addresses, cards, setCards, defaultCardIdx, defaultAddressIdx }: { cart: Product[]; onOrderPlaced: () => void; setOrders: (orders: any[]) => void; orders: any[]; addresses: any[]; cards: any[]; setCards: (cards: any[]) => void; defaultCardIdx: number; defaultAddressIdx: number }) {
+function Checkout({ cart, onOrderPlaced, setOrders, orders, addresses, cards, setCards, defaultCardIdx }: { cart: Product[]; onOrderPlaced: () => void; setOrders: (orders: any[]) => void; orders: any[]; addresses: any[]; cards: any[]; setCards: (cards: any[]) => void; defaultCardIdx: number }) {
   const [orderConfirmed, setOrderConfirmed] = useState(false)
-  const [selectedAddress, setSelectedAddress] = useState(defaultAddressIdx)
   const [selectedCard, setSelectedCard] = useState(defaultCardIdx)
   const [showAddCardModal, setShowAddCardModal] = useState(false);
   const [newCardForm, setNewCardForm] = useState({ name: '', number: '', expiry: '', cvc: '' });
@@ -280,7 +279,7 @@ function Checkout({ cart, onOrderPlaced, setOrders, orders, addresses, cards, se
     setOrders([...orders, {
       date: Date.now(),
       items: cart,
-      address: addresses[selectedAddress],
+      address: addresses[0], // Use first address as default
       card: cards[selectedCard],
     }])
     onOrderPlaced()
@@ -442,7 +441,7 @@ function Checkout({ cart, onOrderPlaced, setOrders, orders, addresses, cards, se
   )
 }
 
-function Account({ cards, setCards, addresses, setAddresses, orders, setOrders, cardForm, setCardForm, defaultCardIdx, setDefaultCardIdx, defaultAddressIdx, setDefaultAddressIdx, toast }: { cards: any[]; setCards: (cards: any[]) => void; addresses: any[]; setAddresses: (addresses: any[]) => void; orders: any[]; setOrders: (orders: any[]) => void; cardForm: any; setCardForm: (form: any) => void; defaultCardIdx: number; setDefaultCardIdx: (idx: number) => void; defaultAddressIdx: number; setDefaultAddressIdx: (idx: number) => void; toast: any }) {
+function Account({ cards, setCards, addresses, setAddresses, orders, cardForm, setCardForm, defaultCardIdx, setDefaultCardIdx, defaultAddressIdx, setDefaultAddressIdx, toast }: { cards: any[]; setCards: (cards: any[]) => void; addresses: any[]; setAddresses: (addresses: any[]) => void; orders: any[]; cardForm: any; setCardForm: (form: any) => void; defaultCardIdx: number; setDefaultCardIdx: (idx: number) => void; defaultAddressIdx: number; setDefaultAddressIdx: (idx: number) => void; toast: any }) {
   const [tab, setTab] = useState<'payment' | 'address' | 'orders'>('payment');
   const navigate = useNavigate();
   // Add card handler
@@ -518,13 +517,6 @@ function Account({ cards, setCards, addresses, setAddresses, orders, setOrders, 
     setEditingAddressIdx(null);
     setAddressForm({ name: '', street: '', city: '', state: '', zip: '', country: '' });
   }
-  // Order history state
-  const [orderForm, setOrderForm] = useState({
-    name: '',
-    number: '',
-    expiry: '',
-    cvc: '',
-  });
   useEffect(() => {
     localStorage.setItem('shamazon-orders', JSON.stringify(orders));
   }, [orders]);
@@ -1037,7 +1029,7 @@ function App() {
         <Route path="/products" element={<Products onAddToCart={handleAddToCart} search={search} category={getCategory()} />} />
         <Route path="/products/:id" element={<ProductPage onAddToCart={handleAddToCart} />} />
         <Route path="/cart" element={<Cart cart={cart} onRemoveFromCart={handleRemoveFromCart} />} />
-        <Route path="/checkout" element={<Checkout cart={cart} onOrderPlaced={handleOrderPlaced} setOrders={setOrders} orders={orders} addresses={addresses} cards={cards} setCards={setCards} defaultCardIdx={defaultCardIdx} defaultAddressIdx={defaultAddressIdx} />} />
+        <Route path="/checkout" element={<Checkout cart={cart} onOrderPlaced={handleOrderPlaced} setOrders={setOrders} orders={orders} addresses={addresses} cards={cards} setCards={setCards} defaultCardIdx={defaultCardIdx} />} />
         <Route path="/signin" element={<SignIn onSignIn={handleSignIn} />} />
         <Route path="/signup" element={<SignUp onSignUp={handleSignUp} />} />
         <Route path="/account" element={
@@ -1047,7 +1039,6 @@ function App() {
             addresses={addresses}
             setAddresses={setAddresses}
             orders={orders}
-            setOrders={setOrders}
             cardForm={cardForm}
             setCardForm={setCardForm}
             defaultCardIdx={defaultCardIdx}
