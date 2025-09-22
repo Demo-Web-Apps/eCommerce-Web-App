@@ -8,15 +8,17 @@ type Props = {
 
 export default function ProductList({ onAddToCart, products }: Props) {
   return (
-    <div className="product-list" style={{ display: 'flex', flexWrap: 'wrap', gap: 24 }} data-testid="product-list">
+    <div id="product-list" className="product-list" style={{ display: 'flex', flexWrap: 'wrap', gap: 24 }} data-testid="product-list">
       {products.map((product) => (
         <Link
+          id={`product-link-${product.id}`}
           to={`/products/${product.id}`}
           key={product.id}
           style={{ textDecoration: 'none' }}
           data-testid={`product-link-${product.id}`}
         >
           <div
+            id={`product-card-${product.id}`}
             className="product-card"
             data-testid={`product-card-${product.id}`}
             style={{
@@ -33,11 +35,11 @@ export default function ProductList({ onAddToCart, products }: Props) {
               cursor: 'pointer',
             }}
           >
-            <img src={product.image} alt={product.name} style={{ width: 150, height: 150, objectFit: 'contain', marginBottom: 12 }} />
-            <h2 style={{ color: '#131921', fontSize: 18, margin: '8px 0' }}>{product.name}</h2>
-            <p style={{ color: '#555', fontSize: 14 }}>{product.description}</p>
-            <div style={{ color: '#007185', fontWeight: 500, margin: '8px 0' }}>{product.category}</div>
-            <div style={{ color: '#b12704', fontWeight: 700, fontSize: 18, marginBottom: 12 }}>${product.price.toFixed(2)}</div>
+            <img id={`product-image-${product.id}`} src={product.image} alt={product.name} style={{ width: 150, height: 150, objectFit: 'contain', marginBottom: 12 }} />
+            <h2 id={`product-name-${product.id}`} style={{ color: '#131921', fontSize: 18, margin: '8px 0' }}>{product.name}</h2>
+            <p id={`product-description-${product.id}`} style={{ color: '#555', fontSize: 14 }}>{product.description}</p>
+            <div id={`product-category-${product.id}`} style={{ color: '#007185', fontWeight: 500, margin: '8px 0' }}>{product.category}</div>
+            <div id={`product-price-${product.id}`} style={{ color: '#b12704', fontWeight: 700, fontSize: 18, marginBottom: 12 }}>${product.price.toFixed(2)}</div>
             <button
               id={`add-to-cart-${product.id}`}
               data-testid={`add-to-cart-${product.id}`}

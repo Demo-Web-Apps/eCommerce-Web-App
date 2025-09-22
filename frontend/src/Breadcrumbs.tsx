@@ -21,21 +21,21 @@ export default function Breadcrumbs() {
   // Build links
   let to = '';
   return (
-    <nav aria-label="Breadcrumb" style={{ margin: '18px 0 18px 0', fontSize: 15 }}>
-      <ol style={{ display: 'flex', gap: 8, listStyle: 'none', padding: 0, margin: 0 }}>
-        <li>
-          <Link to="/" style={{ color: '#007185', textDecoration: 'underline', fontWeight: 600 }}>Home</Link>
+    <nav id="breadcrumbs" aria-label="Breadcrumb" style={{ margin: '18px 0 18px 0', fontSize: 15 }}>
+      <ol id="breadcrumbs-list" style={{ display: 'flex', gap: 8, listStyle: 'none', padding: 0, margin: 0 }}>
+        <li id="breadcrumb-home">
+          <Link id="breadcrumb-home-link" to="/" style={{ color: '#007185', textDecoration: 'underline', fontWeight: 600 }}>Home</Link>
         </li>
         {pathnames.map((segment, idx) => {
           to += '/' + segment;
           const isLast = idx === pathnames.length - 1;
           return (
-            <li key={to} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <span style={{ color: '#bbb', margin: '0 4px' }}>/</span>
+            <li id={`breadcrumb-${idx}`} key={to} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span id={`breadcrumb-separator-${idx}`} style={{ color: '#bbb', margin: '0 4px' }}>/</span>
               {isLast ? (
-                <span style={{ color: '#232f3e', fontWeight: 700 }}>{pretty(segment)}</span>
+                <span id={`breadcrumb-current-${idx}`} style={{ color: '#232f3e', fontWeight: 700 }}>{pretty(segment)}</span>
               ) : (
-                <Link to={to} style={{ color: '#007185', textDecoration: 'underline', fontWeight: 600 }}>{pretty(segment)}</Link>
+                <Link id={`breadcrumb-link-${idx}`} to={to} style={{ color: '#007185', textDecoration: 'underline', fontWeight: 600 }}>{pretty(segment)}</Link>
               )}
             </li>
           );

@@ -35,9 +35,10 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   return (
     <ToastContext.Provider value={{ showToast }}>
       {children}
-      <div style={{ position: 'fixed', top: 24, right: 24, zIndex: 9999, display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div id="toast-container" style={{ position: 'fixed', top: 24, right: 24, zIndex: 9999, display: 'flex', flexDirection: 'column', gap: 12 }}>
         {toasts.map(t => (
           <div
+            id={`toast-${t.id}`}
             key={t.id}
             role="status"
             aria-live="polite"
@@ -59,10 +60,10 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               animation: 'toastIn 0.2s',
             }}
           >
-            {t.type === 'success' && <span style={{ fontSize: 20, marginRight: 6 }}>✔️</span>}
-            {t.type === 'error' && <span style={{ fontSize: 20, marginRight: 6 }}>❌</span>}
-            {t.type === 'info' && <span style={{ fontSize: 20, marginRight: 6 }}>ℹ️</span>}
-            <span>{t.message}</span>
+            {t.type === 'success' && <span id={`toast-icon-${t.id}`} style={{ fontSize: 20, marginRight: 6 }}>✔️</span>}
+            {t.type === 'error' && <span id={`toast-icon-${t.id}`} style={{ fontSize: 20, marginRight: 6 }}>❌</span>}
+            {t.type === 'info' && <span id={`toast-icon-${t.id}`} style={{ fontSize: 20, marginRight: 6 }}>ℹ️</span>}
+            <span id={`toast-message-${t.id}`}>{t.message}</span>
           </div>
         ))}
       </div>
